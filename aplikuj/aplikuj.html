@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styleaplikuj.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>workin - Aplikuj o pracę</title>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">
+            <h1>workin</h1>
+        </div>
+        <div class="nav-links">
+            <a href="../panel uzytkownika/strona.html">Panel użytkownika</a>
+            <a href="../skrzynka mailowa/skrzynka.html">Skrzynka</a>
+            <a href="../kalendarz/kalendarz.html">Kalendarz</a>
+            <a href="#" class="active">Aplikuj</a>
+        </div>
+    </nav>
+
+    <!-- Application Form - Initial State -->
+    <div class="application-container" id="initial-state">
+        <div class="application-form-container centered">
+            <h2 class="section-title">Szybka aplikacja</h2>
+            <p class="form-intro">Wklej link do oferty pracy, a wypełnimy formularz za Ciebie na podstawie Twojego CV</p>
+            
+            <div class="big-input-container">
+                <input type="url" id="job-link-big" name="job-link" placeholder="https://example.com/oferta-pracy" class="big-input">
+            </div>
+            
+            <div class="paste-button-container">
+                <button id="paste-button" class="btn secondary"><i class="fas fa-paste"></i> Wklej link</button>
+            </div>
+            
+            <div class="form-submit">
+                <button id="show-form" class="btn primary big-apply-btn"><i class="fas fa-paper-plane"></i> Aplikuj</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application Form - Form View (hidden by default) -->
+    <div class="application-container hidden" id="form-state">
+        <!-- Job Information Section - Moved to top -->
+        <div class="job-info-container">
+            <h2 class="main-title">Aplikacja na stanowisko</h2>
+            
+            <div class="job-info-boxes">
+                <div class="info-box">
+                    <div class="info-icon">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <h3>Google Inc.</h3>
+                    <p class="company-location">Kraków, Polska</p>
+                    <div class="job-details">
+                        <br>
+                        <span class="job-label">Senior Frontend Developer</span><br>
+                        <span class="salary-range"><strong>15 000 - 25 000 PLN</strong></span><br>
+                        <span class="job-type"><i class="fas fa-briefcase"></i> Pełny etat</span>
+                    </div>
+                </div>
+                
+                <div class="info-box">
+                    <div class="info-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Dopasowanie: 87%</h3>
+                    <p>Twoje CV dobrze pasuje do wymagań tej oferty. Uzupełnienie wszystkich pól zwiększy Twoje szanse.</p>
+                </div>
+                
+                <div class="info-box">
+                    <div class="info-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <h3>Wskazówki</h3>
+                    <ul class="tips-list">
+                        <li>Odpowiedz na wszystkie pytania otwarte</li>
+                        <li>Dodaj list motywacyjny aby wyróżnić się spośród kandydatów</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="application-form-container">
+            <h2 class="section-title">Formularz aplikacyjny</h2>
+            <p class="form-intro">Uzupełnij dane do aplikacji lub popraw automatycznie uzupełnione pola.</p>
+            
+            <form class="application-form">
+                <!-- Personal Information Section -->
+                <div class="form-section">
+                    <h3 class="subsection-title">Dane osobowe</h3>
+                    <div class="form-row">
+                        <div class="form-group half">
+                            <label for="first-name"><i class="fas fa-user"></i> Imię</label>
+                            <input type="text" id="first-name" name="first-name" value="Jan" required>
+                        </div>
+                        <div class="form-group half">
+                            <label for="last-name"><i class="fas fa-user"></i> Nazwisko</label>
+                            <input type="text" id="last-name" name="last-name" value="Kowalski" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group half">
+                            <label for="email"><i class="fas fa-envelope"></i> Adres email</label>
+                            <input type="email" id="email" name="email" value="jan.kowalski@example.com" required>
+                        </div>
+                        <div class="form-group half">
+                            <label for="phone"><i class="fas fa-phone"></i> Numer telefonu</label>
+                            <input type="tel" id="phone" name="phone" value="+48 123 456 789" pattern="^\+?[0-9\s]{9,}$" placeholder="+48 123 456 789" required>
+                            <span class="input-hint">Format: +48 123 456 789</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="location"><i class="fas fa-map-marker-alt"></i> Lokalizacja</label>
+                            <input type="text" id="location" name="location" value="Kraków, Polska" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Experience Section -->
+                <div class="form-section">
+                    <h3 class="subsection-title">Doświadczenie</h3>
+                    <div class="experience-item">
+                        <div class="form-row">
+                            <div class="form-group half">
+                                <label for="company"><i class="fas fa-building"></i> Firma</label>
+                                <input type="text" id="company" name="company" value="Example Corp" required>
+                            </div>
+                            <div class="form-group half">
+                                <label for="position"><i class="fas fa-briefcase"></i> Stanowisko</label>
+                                <input type="text" id="position" name="position" value="Frontend Developer" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group half">
+                                <label for="start-date"><i class="fas fa-calendar"></i> Od</label>
+                                <input type="text" id="start-date" name="start-date" value="01.2022" required>
+                            </div>
+                            <div class="form-group half">
+                                <label for="end-date"><i class="fas fa-calendar"></i> Do</label>
+                                <input type="text" id="end-date" name="end-date" value="obecnie" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Skills Section -->
+                <div class="form-section">
+                    <h3 class="subsection-title">Umiejętności</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="skills"><i class="fas fa-code"></i> Umiejętności techniczne</label>
+                            <input type="text" id="skills" name="skills" value="HTML, CSS, JavaScript, React, TypeScript, Node.js" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="languages"><i class="fas fa-language"></i> Języki obce</label>
+                            <input type="text" id="languages" name="languages" value="Angielski (C1), Niemiecki (B1)" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Open Question Section -->
+                <div class="form-section">
+                    <h3 class="subsection-title">Pytania otwarte</h3>
+                    <div class="form-group">
+                        <label for="motivation">Co motywuje Cię do pracy w naszej firmie?</label>
+                        <div class="open-question-notice">
+                            <i class="fas fa-exclamation-circle"></i> 
+                            Trafiłeś na to pytanie po raz pierwszy i odpowiadasz na nie po raz ostatni! Następnym razem zostanie wypełnione automatycznie.
+                        </div>
+                        <textarea id="motivation" name="motivation" rows="4" placeholder="Wpisz swoją odpowiedź..."></textarea>
+                        <button type="button" class="btn ai-generate"><i class="fas fa-robot"></i> Wygeneruj odpowiedź automatycznie</button>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="strengths">Jakie są Twoje największe mocne strony?</label>
+                        <div class="open-question-notice">
+                            <i class="fas fa-exclamation-circle"></i> 
+                            Trafiłeś na to pytanie po raz pierwszy i odpowiadasz na nie po raz ostatni! Następnym razem zostanie wypełnione automatycznie.
+                        </div>
+                        <textarea id="strengths" name="strengths" rows="4" placeholder="Wpisz swoją odpowiedź..."></textarea>
+                        <button type="button" class="btn ai-generate"><i class="fas fa-robot"></i> Wygeneruj odpowiedź automatycznie</button>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="experience">Opisz swoje doświadczenie w pracy z podobnymi technologiami</label>
+                        <div class="open-question-notice">
+                            <i class="fas fa-exclamation-circle"></i> 
+                            Trafiłeś na to pytanie po raz pierwszy i odpowiadasz na nie po raz ostatni! Następnym razem zostanie wypełnione automatycznie.
+                        </div>
+                        <textarea id="experience" name="experience" rows="4" placeholder="Wpisz swoją odpowiedź..."></textarea>
+                        <button type="button" class="btn ai-generate"><i class="fas fa-robot"></i> Wygeneruj odpowiedź automatycznie</button>
+                    </div>
+                </div>
+                
+                <!-- Attachments Section -->
+                <div class="form-section">
+                    <h3 class="subsection-title">Załączniki</h3>
+                    <div class="attachments-container">
+                        <div class="cv-attachment">
+                            <div class="attachment-header">
+                                <h4>Twoje CV</h4>
+                            </div>
+                            <div class="current-file">
+                                <div class="file-icon"><i class="fas fa-file-pdf"></i></div>
+                                <div class="file-details">
+                                    <p class="file-name">JanKowalski_CV_2025.pdf</p>
+                                    <div class="file-match-score">
+                                        <div class="match-label">Dopasowanie do oferty:</div>
+                                        <div class="match-progress">
+                                            <div class="match-bar" style="width: 87%"></div>
+                                        </div>
+                                        <div class="match-percent">87%</div>
+                                    </div>
+                                </div>
+                                <div class="file-actions">
+                                    <button type="button" class="btn-icon" title="Podgląd"><i class="fas fa-eye"></i></button>
+                                    <button type="button" class="btn-icon" title="Zmień"><i class="fas fa-exchange-alt"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="cover-letter-options">
+                            <div class="attachment-header">
+                                <h4>List motywacyjny</h4>
+                            </div>
+                            <p class="option-text">Zwiększ swoje szanse na zatrudnienie dodając list motywacyjny</p>
+                            <div class="cover-letter-buttons">
+                                <button type="button" class="btn secondary"><i class="fas fa-upload"></i> Dodaj z pliku</button>
+                                <button type="button" class="btn ai-generate"><i class="fas fa-robot"></i> Wygeneruj przez AI</button>
+                            </div>
+                            <div class="cover-letter-preview hidden" id="cover-letter-preview">
+                                <div class="current-file">
+                                    <div class="file-icon"><i class="fas fa-file-alt"></i></div>
+                                    <div class="file-details">
+                                        <p class="file-name">JanKowalski_LM_Google_2025.pdf</p>
+                                    </div>
+                                    <div class="file-actions">
+                                        <button type="button" class="btn-icon" title="Podgląd"><i class="fas fa-eye"></i></button>
+                                        <button type="button" class="btn-icon" title="Usuń"><i class="fas fa-times"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group checkbox-group">
+                    <input type="checkbox" id="terms" name="terms" required checked>
+                    <label for="terms">Akceptuję <a href="#">regulamin</a> i wyrażam zgodę na przetwarzanie danych osobowych</label>
+                </div>
+                
+                <div class="form-submit">
+                    <button type="submit" class="btn primary"><i class="fas fa-save"></i> Zapisz i aplikuj</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-column">
+                <h3>WorkIn</h3>
+                <p>Twoja droga do kariery zaczyna się tutaj!</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3>Linki</h3>
+                <ul>
+                    <li><a href="#">Strona główna</a></li>
+                    <li><a href="#">O nas</a></li>
+                    <li><a href="#">Oferty pracy</a></li>
+                    <li><a href="#">Dla pracodawców</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Kontakt</h3>
+                <p><i class="fas fa-map-marker-alt"></i> ul. Przykładowa 123, Warszawa</p>
+                <p><i class="fas fa-phone"></i> +48 123 456 789</p>
+                <p><i class="fas fa-envelope"></i> kontakt@workin.pl</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 WorkIn. Wszystkie prawa zastrzeżone.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Przełączanie widoku formularza
+        document.getElementById('show-form').addEventListener('click', function() {
+            document.getElementById('initial-state').classList.add('hidden');
+            document.getElementById('form-state').classList.remove('hidden');
+        });
+        
+        // Generowanie odpowiedzi przez AI
+        document.querySelectorAll('.ai-generate').forEach(button => {
+            button.addEventListener('click', function() {
+                const textarea = this.previousElementSibling;
+                textarea.value = "Wygenerowana odpowiedź przez AI: Jestem zmotywowany do pracy w Państwa firmie ze względu na innowacyjne podejście do rozwiązywania problemów oraz możliwość rozwoju w międzynarodowym środowisku. Moje doświadczenie w projektach z wykorzystaniem najnowszych technologii doskonale wpisuje się w profil działalności firmy.";
+                button.innerHTML = '<i class="fas fa-check-circle"></i> Odpowiedź wygenerowana';
+                button.classList.add('generated');
+            });
+        });
+        
+        // Obsługa przycisku "Wklej"
+        document.getElementById('paste-button').addEventListener('click', function() {
+            document.getElementById('job-link-big').value = "https://careers.google.com/jobs/senior-frontend-developer-krakow";
+        });
+        
+        // Obsługa wysłania formularza
+        document.querySelector('.application-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Symulacja wysłania i pokazanie komunikatu sukcesu
+            const formContainer = document.querySelector('#form-state .application-form-container');
+            
+            formContainer.innerHTML = `
+                <div class="success-message">
+                    <div class="success-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h2>Aplikacja wysłana pomyślnie!</h2>
+                    <p>Twoja aplikacja na stanowisko <strong>Senior Frontend Developer</strong> w firmie <strong>Google</strong> została wysłana.</p>
+                    <p>Status aplikacji możesz śledzić w swoim panelu użytkownika.</p>
+                    <div class="button-group">
+                        <a href="../panel uzytkownika/strona.html" class="btn primary">Przejdź do panelu</a>
+                        <a href="#" class="btn secondary">Aplikuj na inną ofertę</a>
+                    </div>
+                </div>
+            `;
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ustawienia - Klient Email</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/layout.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Ustawienia</h1>
+        <div class="settings-section">
+            <h2>Ogólne</h2>
+            <label for="username">Nazwa użytkownika:</label>
+            <input type="text" id="username" placeholder="Wprowadź swoją nazwę użytkownika">
+            
+            <label for="email">Adres email:</label>
+            <input type="email" id="email" placeholder="Wprowadź swój adres email">
+        </div>
+        
+        <div class="settings-section">
+            <h2>Wygląd</h2>
+            <label for="theme">Motyw:</label>
+            <select id="theme">
+                <option value="light">Jasny</option>
+                <option value="dark">Ciemny</option>
+            </select>
+        </div>
+        
+        <div class="settings-section">
+            <h2>Powiadomienia</h2>
+            <label>
+                <input type="checkbox" id="email-notifications" checked>
+                Powiadomienia o nowych emailach
+            </label>
+        </div>
+        
+        <button type="button">Zapisz zmiany</button>
+    </div>
+</body>
+</html>

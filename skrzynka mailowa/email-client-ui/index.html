@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Client UI</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="images/logos/app-logo.svg" alt="Email Client Logo">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="pages/inbox.html">Inbox</a></li>
+                <li><a href="pages/sent.html">Sent</a></li>
+                <li><a href="pages/drafts.html">Drafts</a></li>
+                <li><a href="pages/settings.html">Settings</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="email-list">
+            <h2>Inbox</h2>
+            <div class="email-item">
+                <h3>Subject: Welcome to our service!</h3>
+                <p>From: support@service.com</p>
+                <p>Date: 01.01.2023</p>
+                <p>Snippet: Thank you for signing up...</p>
+            </div>
+            <div class="email-item">
+                <h3>Subject: Your order has been shipped</h3>
+                <p>From: orders@shop.com</p>
+                <p>Date: 02.01.2023</p>
+                <p>Snippet: Your order is on its way...</p>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2023 Email Client. All rights reserved.</p>
+    </footer>
+    <script src="js/ui-interactions.js"></script>
+    <script src="js/theme-switcher.js"></script>
+</body>
+</html>

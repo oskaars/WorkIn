@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>workin - Kalendarz</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #fafafa;
+            color: #333;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #68c6dd;
+            padding: 1rem 5%;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo h1 {
+            color: #333;
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-links a {
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 0.75rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+        }
+
+        .nav-links a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-links a.active {
+            background-color: rgba(255, 255, 255, 0.3);
+            font-weight: 600;
+        }
+
+        /* Calendar Container */
+        .calendar-container {
+            margin: 1.5rem 5%;
+        }
+
+        /* Main Calendar */
+        .main-calendar {
+            width: 100%;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            min-height: 700px;
+            overflow: hidden; /* Zapobiega wychodzeniu treści poza kontener */
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .calendar-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .calendar-nav {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap; /* Pozwala na zawijanie przycisków */
+            gap: 5px; /* Odstęp między przyciskami przy zawijaniu */
+        }
+
+        .calendar-btn {
+            background: none;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 6px 12px;
+            margin: 0 2px; /* Zmniejszony margin */
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: #555;
+            transition: all 0.2s ease;
+        }
+
+        .calendar-btn:hover {
+            background-color: #f5f5f5;
+        }
+
+        .calendar-btn.today {
+            background-color: #68c6dd;
+            color: white;
+            border-color: #68c6dd;
+        }
+
+        .calendar-btn.today:hover {
+            background-color: #57b5cc;
+        }
+
+        .calendar-btn.create {
+            background-color: #68c6dd;
+            color: white;
+            border-color: #68c6dd;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .calendar-btn.create:hover {
+            background-color: #57b5cc;
+        }
+
+        .calendar-nav-arrows {
+            display: flex;
+        }
+
+        .calendar-nav-arrows button {
+            width: 36px;
+            height: 36px;
+            background: none;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            margin: 0 2px;
+            color: #555;
+        }
+
+        .calendar-nav-arrows button:hover {
+            background-color: #f5f5f5;
+        }
+
+        .calendar-view-selector {
+            display: flex;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-left: 5px; /* Zmniejszony margin */
+        }
+
+        .calendar-view-btn {
+            background: none;
+            border: none;
+            padding: 8px 10px; /* Zmniejszony padding */
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        .calendar-view-btn.active {
+            background-color: #68c6dd;
+            color: white;
+        }
+
+        .calendar-legend {
+            display: flex;
+            gap: 15px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            font-size: 0.85rem;
+            color: #555;
+        }
+
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 2px;
+            margin-right: 6px;
+        }
+
+        .legend-color.meetings {
+            background-color: #68c6dd;
+        }
+
+        .legend-color.deadlines {
+            background-color: #e07a71;
+        }
+
+        .legend-color.reminders {
+            background-color: #e0b95f;
+        }
+
+        .legend-color.holidays {
+            background-color: #57b376;
+        }
+
+        .weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            text-align: center;
+            font-weight: 500;
+            color: #555;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+            width: 100%; /* Upewniamy się, że zajmuje całą szerokość */
+        }
+
+        .dates-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            grid-auto-rows: minmax(100px, auto);
+            gap: 3px; /* Zmniejszony odstęp */
+            width: 100%; /* Upewniamy się, że zajmuje całą szerokość */
+        }
+
+        .date-cell {
+            border: 1px solid #eee;
+            border-radius: 5px;
+            padding: 6px; /* Zmniejszony padding */
+            position: relative;
+            overflow: hidden; /* Ukrywa przekraczającą zawartość */
+        }
+
+        .date-cell:hover {
+            background-color: #f9f9f9;
+        }
+
+        .date-number {
+            font-size: 0.9rem;
+            color: #333;
+            margin-bottom: 6px; /* Zmniejszony margin */
+            font-weight: 500;
+        }
+
+        .date-cell.today {
+            background-color: #f0f9fc;
+            border: 1px solid #68c6dd;
+        }
+
+        .date-cell.today .date-number {
+            color: #68c6dd;
+            font-weight: 600;
+        }
+
+        .date-cell.inactive {
+            background-color: #f9f9f9;
+        }
+
+        .date-cell.inactive .date-number {
+            color: #aaa;
+        }
+
+        .cell-event {
+            font-size: 0.8rem;
+            padding: 3px 5px;
+            margin-bottom: 3px; /* Zmniejszony margin */
+            border-radius: 3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            cursor: pointer;
+            font-weight: 500;
+            border-left: 3px solid;
+        }
+
+        .cell-event.meeting {
+            background-color: rgba(104, 198, 221, 0.1);
+            border-left-color: #68c6dd;
+            color: #2a7d8f;
+        }
+
+        .cell-event.deadline {
+            background-color: rgba(224, 122, 113, 0.1);
+            border-left-color: #e07a71;
+            color: #a33f38;
+        }
+
+        .cell-event.reminder {
+            background-color: rgba(224, 185, 95, 0.1);
+            border-left-color: #e0b95f;
+            color: #9c7b2a;
+        }
+
+        .cell-event.holiday {
+            background-color: rgba(87, 179, 118, 0.1);
+            border-left-color: #57b376;
+            color: #2a754a;
+        }
+
+        .more-events {
+            font-size: 0.75rem;
+            color: #666;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: #333;
+            color: white;
+            padding-top: 3rem;
+            margin-top: 2rem;
+        }
+
+        .footer-container {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 5%;
+        }
+
+        .footer-column {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 2rem;
+        }
+
+        .footer-column h3 {
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 3px;
+            background-color: #68c6dd;
+            bottom: 0;
+            left: 0;
+        }
+
+        .footer-column p {
+            margin-bottom: 1rem;
+            color: #ccc;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-icons a {
+            color: white;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            color: #68c6dd;
+            transform: translateY(-3px);
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-column ul li a {
+            color: #ccc;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-column ul li a:hover {
+            color: #68c6dd;
+            padding-left: 5px;
+        }
+
+        .footer-bottom {
+            background-color: #222;
+            padding: 1.5rem 5%;
+            text-align: center;
+        }
+
+        .footer-bottom p {
+            color: #999;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                padding: 1rem;
+            }
+            
+            .logo {
+                margin-bottom: 1rem;
+            }
+            
+            .nav-links {
+                width: 100%;
+                justify-content: space-between;
+                overflow-x: auto;
+                padding-bottom: 0.5rem;
+            }
+
+            .date-cell {
+                padding: 4px;
+            }
+
+            .cell-event {
+                padding: 2px 4px;
+                font-size: 0.7rem;
+            }
+
+            .calendar-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .calendar-nav {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .weekdays {
+                font-size: 0.8rem;
+            }
+
+            .date-number {
+                font-size: 0.8rem;
+            }
+
+            .calendar-view-selector {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">
+            <h1>workin</h1>
+        </div>
+        <div class="nav-links">
+            <a href="../panel uzytkownika/strona.html">Panel użytkownika</a>
+            <a href="../skrzynka mailowa/skrzynka.html">Skrzynka</a>
+            <a href="../kalendarz/kalendarz.html" class="active">Kalendarz</a>
+            <a href="../aplikuj/aplikuj.html">Aplikuj</a>
+        </div>
+    </nav>
+
+    <!-- Calendar Container -->
+    <div class="calendar-container">
+        <!-- Main Calendar -->
+        <div class="main-calendar">
+            <div class="calendar-header">
+                <h2 class="calendar-title">Maj 2025</h2>
+                <div class="calendar-nav">
+                    <button class="calendar-btn create">
+                        <i class="fas fa-plus"></i> Dodaj wydarzenie
+                    </button>
+                    <button class="calendar-btn today">Dzisiaj</button>
+                    <div class="calendar-nav-arrows">
+                        <button><i class="fas fa-chevron-left"></i></button>
+                        <button><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                    <div class="calendar-view-selector">
+                        <button class="calendar-view-btn">Dzień</button>
+                        <button class="calendar-view-btn">Tydzień</button>
+                        <button class="calendar-view-btn active">Miesiąc</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="calendar-legend">
+                <div class="legend-item">
+                    <div class="legend-color meetings"></div>
+                    <span>Spotkania</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color deadlines"></div>
+                    <span>Deadliny</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color reminders"></div>
+                    <span>Przypomnienia</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color holidays"></div>
+                    <span>Dni wolne</span>
+                </div>
+            </div>
+
+            <div class="weekdays">
+                <div>Poniedziałek</div>
+                <div>Wtorek</div>
+                <div>Środa</div>
+                <div>Czwartek</div>
+                <div>Piątek</div>
+                <div>Sobota</div>
+                <div>Niedziela</div>
+            </div>
+
+            <div class="dates-grid">
+                <!-- Row 1 -->
+                <div class="date-cell inactive">
+                    <div class="date-number">28</div>
+                </div>
+                <div class="date-cell inactive">
+                    <div class="date-number">29</div>
+                </div>
+                <div class="date-cell inactive">
+                    <div class="date-number">30</div>
+                </div>
+                <div class="date-cell">
+                    <div class="date-number">1</div>
+                </div>
+                <div class="date-cell">
+                    <div class="date-number">2</div>
+                </div>
+                <div class="date-cell">
+                    <div class="date-number">3</div>
+                    <div class="cell-event meeting">10:00 - Spotkanie organizacyjne</div>
+                </div>
+                <div class="date-cell">
+                    <div class="date-number">4</div>
+                </div>
+
+                <!-- Row 2 -->
+                <div class="date-cell">
+                    <div class="date-number">5</div>
+                    <div class="cell-event deadline">23:59 - Deadline: Raport kwartalny</div>
+                </div>
+                <div class="date-cell">
+                    <div class="date-number">6</div>
+                </div>
+                <div class="date-cell">
+                    <div class="date-number">7</div>
+                </div>
+                <div class="date-cell">
+                    <div class="date-number">8</div>
+                </div>
+                <div class="date-cell">
+                    <div class="date-number">9</div>
+                    <div class="cell-event meeting">14:30 - Call z IBM</div>
+                </div>
+                <div class="date-cell">
+                    <div class="date-number">10</div>
+                </div>
+                <div class="date-cell">
+                    <div class="date-number">11</div>
+                </div>
+
+                <!-- Row 3 -->
+                <div class="date-cell">
+                    <div class="date-number">12</div>
+                </div>
+                <div class="date-cell">
+                    <div class="date-number">13</div>
+                </div>
+                <div class="date-cell">
+                    <div class="date-number">14</div>
+                    <div class="cell-event deadline">18:00 - Deadline: Dokumentacja</div>
+                </div>
+                <div class="date-cell">
+                    <div class="date-number">15</div>
+                    <div class="cell-event reminder">Przypomnienie: CV do aktualizacji</div>
+                </div>
+                <div class="date-cell">
+                    <div class="date-number">16</div>
+                </div>
+                <div class="date-cell">
+                    <div class="date-number">17</div>
+                </div>
+                <div class="date-cell">
+                    <div class="date-number">18</div>
+                </div>
+
+                <!-- Row 4 -->
+                <div class="date-cell">
+                    <div class="date-number">19</div>
+                    <div class="cell-event meeting">10:00 - Rozmowa z HR</div>
+                    <div class="cell-event deadline">23:59 - Deadline: Aplikacja Google</div>
+                </div>
+                <div class="date-cell">
+                    <div class="date-number">20</div>
+                    <div class="cell-event holiday">Dzień wolny</div>
+                </div>
+                <div class="date-cell today">
+                    <div class="date-number">21</div>
+                    <div class="cell-event meeting">14:00 - Rozmowa kwalifikacyjna</div>
+                </div>
+                <div class="date-cell">
+                    <div class="date-number">22</div>
+                    <div class="cell-event deadline">12:00 - Deadline: Task Frontend</div>
+                </div>
+                <div class="date-cell">
+                    <div class="date-number">23</div>
+                    <div class="cell-event meeting">10:00 - Spotkanie techniczne</div>
+                </div>
+                <div class="date-cell">
+                    <div class="date-number">24</div>
+                </div>
+                <div class="date-cell">
+                    <div class="date-number">25</div>
+                </div>
+
+                <!-- Row 5 -->
+                <div class="date-cell">
+                    <div class="date-number">26</div>
+                </div>
+                <div class="date-cell">
+                    <div class="date-number">27</div>
+                    <div class="cell-event deadline">18:00 - Deadline: CV i dokumenty</div>
+                </div>
+                <div class="date-cell">
+                    <div class="date-number">28</div>
+                    <div class="cell-event meeting">15:00 - Microsoft Interview</div>
+                    <div class="cell-event reminder">Przypomnienie: Przygotuj portfolio</div>
+                    <div class="more-events">+1 więcej</div>
+                </div>
+                <div class="date-cell">
+                    <div class="date-number">29</div>
+                </div>
+                <div class="date-cell">
+                    <div class="date-number">30</div>
+                </div>
+                <div class="date-cell">
+                    <div class="date-number">31</div>
+                </div>
+                <div class="date-cell inactive">
+                    <div class="date-number">1</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-column">
+                <h3>WorkIn</h3>
+                <p>Twoja droga do kariery zaczyna się tutaj!</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3>Linki</h3>
+                <ul>
+                    <li><a href="#">Strona główna</a></li>
+                    <li><a href="#">O nas</a></li>
+                    <li><a href="#">Dla pracodawców</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Kontakt</h3>
+                <p><i class="fas fa-map-marker-alt"></i> ul. Przykładowa 123, Warszawa</p>
+                <p><i class="fas fa-phone"></i> +48 123 456 789</p>
+                <p><i class="fas fa-envelope"></i> kontakt@workin.pl</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 WorkIn. Wszystkie prawa zastrzeżone.</p>
+        </div>
+    </footer>
+</body>
+</html>

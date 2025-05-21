@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>workin - Skrzynka mailowa</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f6f8fc;
+            color: #202124;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #68c6dd;
+            padding: 1rem 5%;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo h1 {
+            color: #333;
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin: 0;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-links a {
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 0.75rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+        }
+
+        .nav-links a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-links a.active {
+            background-color: rgba(255, 255, 255, 0.3);
+            font-weight: 600;
+        }
+
+        /* Gmail-like Layout */
+        .gmail-container {
+            display: flex;
+            height: calc(100vh - 90px);
+            margin: 0;
+        }
+
+        /* Sidebar styles */
+        .sidebar {
+            width: 256px;
+            background-color: #fff;
+            padding: 8px 0;
+            height: 100%;
+            overflow-y: auto;
+        }
+
+        .compose-btn {
+            margin: 8px 8px 16px 8px;
+            padding: 12px 24px;
+            background-color: #d9eef3;
+            color: #001d35;
+            border: none;
+            border-radius: 16px;
+            font-weight: 500;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 1px 2px rgba(60,64,67,0.1);
+            transition: all 0.2s ease;
+        }
+
+        .compose-btn:hover {
+            box-shadow: 0 1px 3px rgba(60,64,67,0.3);
+            background-color: #c2e7f0;
+        }
+
+        .compose-btn i {
+            margin-right: 8px;
+        }
+
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            padding: 0 12px 0 26px;
+            height: 36px;
+            color: #202124;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 14px;
+            border-top-right-radius: 20px;
+            border-bottom-right-radius: 20px;
+        }
+
+        .sidebar-item:hover {
+            background-color: #f1f3f4;
+        }
+
+        .sidebar-item.active {
+            background-color: #e8f4f8;
+            font-weight: 500;
+        }
+
+        .sidebar-item i {
+            margin-right: 18px;
+            width: 20px;
+            text-align: center;
+            color: #5f6368;
+            font-size: 16px;
+        }
+
+        .sidebar-item.active i {
+            color: #3c7d99;
+        }
+
+        .sidebar-count {
+            margin-left: auto;
+            color: #5f6368;
+            font-size: 12px;
+        }
+
+        .sidebar-label {
+            padding: 20px 0 8px 24px;
+            font-size: 16px;
+            font-weight: 500;
+            color: #202124;
+        }
+
+        /* Main content */
+        .mail-content {
+            flex: 1;
+            background-color: #fff;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Search bar */
+        .search-bar {
+            padding: 8px 16px;
+            background: #f1f3f4;
+            border-radius: 8px;
+            margin: 8px 16px;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-bar i {
+            color: #5f6368;
+            margin-right: 12px;
+        }
+
+        .search-input {
+            border: none;
+            background: transparent;
+            flex: 1;
+            font-size: 14px;
+            color: #202124;
+            outline: none;
+        }
+
+        /* Tabs */
+        .mail-tabs {
+            display: flex;
+            border-bottom: 1px solid #e0e0e0;
+            overflow-x: auto;
+            scrollbar-width: none; /* Firefox */
+        }
+
+        .mail-tabs::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
+        }
+
+        .mail-tab {
+            padding: 16px 24px;
+            color: #5f6368;
+            cursor: pointer;
+            font-size: 14px;
+            border-bottom: 3px solid transparent;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+        }
+
+        .mail-tab.active {
+            color: #68c6dd;
+            border-bottom-color: #68c6dd;
+            font-weight: 500;
+        }
+
+        .mail-tab i {
+            margin-right: 8px;
+        }
+        
+        .mail-tab.firmy i {
+            color: #6a9bdb;
+        }
+        
+        .mail-tab.zaakceptowano i {
+            color: #57b376;
+        }
+        
+        .mail-tab.odrzucono i {
+            color: #e07a71;
+        }
+        
+        .mail-tab.wymaga i {
+            color: #e0b95f;
+        }
+        
+        .mail-tab.spotkanie i {
+            color: #aa7ec2;
+        }
+        
+        .mail-tab.termin i {
+            color: #e69e62;
+        }
+
+        /* Action toolbar */
+        .mail-toolbar {
+            display: flex;
+            padding: 8px 16px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .toolbar-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .toolbar-right {
+            display: flex;
+            align-items: center;
+            margin-left: auto;
+        }
+
+        .toolbar-btn {
+            background: none;
+            border: none;
+            color: #5f6368;
+            cursor: pointer;
+            margin: 0 4px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .toolbar-btn:hover {
+            background-color: #f1f3f4;
+        }
+
+        /* Emails list */
+        .emails-container {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .email-row {
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #f1f3f4;
+            padding: 0 16px;
+            height: 60px;
+            cursor: pointer;
+            position: relative;
+            color: #202124;
+        }
+
+        .email-row:hover {
+            box-shadow: inset 1px 0 0 #dadce0, inset -1px 0 0 #dadce0, 0 1px 2px 0 rgba(60,64,67,0.1);
+            z-index: 1;
+        }
+
+        .email-row.unread {
+            background-color: #f8fafd;
+            font-weight: 700;
+        }
+
+        .email-row.accepted {
+            background-color: rgba(87, 179, 118, 0.06);
+            border-left: 3px solid #57b376;
+        }
+
+        .email-row.rejected {
+            background-color: rgba(224, 122, 113, 0.06);
+            border-left: 3px solid #e07a71;
+        }
+
+        .email-check {
+            padding: 0 16px 0 0;
+        }
+
+        .email-star {
+            padding: 0 16px 0 0;
+            color: #5f6368;
+        }
+
+        .email-star.starred {
+            color: #f5c518;
+        }
+
+        .email-important {
+            padding: 0 16px 0 0;
+            color: #5f6368;
+        }
+
+        .email-sender {
+            width: 200px;
+            padding-right: 16px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .email-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding-right: 16px;
+            min-width: 0;
+            justify-content: center;
+        }
+
+        .email-subject-line {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2px;
+        }
+
+        .email-subject {
+            font-weight: inherit;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .email-body-line {
+            display: flex;
+            align-items: center;
+        }
+
+        .email-body {
+            color: #5f6368;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-weight: 400;
+            flex: 1;
+        }
+
+        .email-tags {
+            display: flex;
+            margin-left: 12px;
+        }
+
+        .email-tag {
+            font-size: 11px;
+            padding: 1px 8px;
+            border-radius: 10px;
+            margin-right: 5px;
+            white-space: nowrap;
+            opacity: 0.85;
+        }
+
+        .email-tag.response-required {
+            background-color: #f9edcb;
+            color: #694c00;
+            border: 1px solid #e0d2a8;
+        }
+
+        .email-tag.calendar {
+            background-color: #e8d7f0;
+            color: #5a286e;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            border: 1px solid #d6c0df;
+        }
+
+        .email-tag.calendar i {
+            margin-right: 3px;
+            font-size: 9px;
+        }
+
+        .email-date {
+            width: 100px;
+            text-align: right;
+            white-space: nowrap;
+            color: #5f6368;
+        }
+
+        .email-row:hover .email-actions {
+            display: flex;
+        }
+
+        .email-actions {
+            display: none;
+            position: absolute;
+            right: 90px;
+            background-color: #fff;
+        }
+
+        .email-action-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: none;
+            border: none;
+            color: #5f6368;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .email-action-btn:hover {
+            background-color: #f1f3f4;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 16px;
+            text-align: center;
+            color: #5f6368;
+            font-size: 13px;
+            border-top: 1px solid #e0e0e0;
+            background-color: #f6f8fc;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">
+            <h1>workin</h1>
+        </div>
+        <div class="nav-links">
+            <a href="../panel uzytkownika/strona.html">Panel użytkownika</a>
+            <a href="../skrzynka mailowa/skrzynka.html" class="active">Skrzynka</a>
+            <a href="../kalendarz/kalendarz.html">Kalendarz</a>
+            <a href="../aplikuj/aplikuj.html">Aplikuj</a>
+        </div>
+    </nav>
+
+    <!-- Gmail-like Interface -->
+    <div class="gmail-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <button class="compose-btn">
+                <i class="fas fa-pen"></i> Utwórz
+            </button>
+
+            <div class="sidebar-item active">
+                <i class="fas fa-inbox"></i>
+                <span>Skrzynka odbiorcza</span>
+                <span class="sidebar-count">8</span>
+            </div>
+
+            <div class="sidebar-item">
+                <i class="fas fa-star"></i>
+                <span>Oznaczone gwiazdką</span>
+                <span class="sidebar-count">2</span>
+            </div>
+
+            <div class="sidebar-item">
+                <i class="fas fa-clock"></i>
+                <span>Wstrzymane</span>
+            </div>
+
+            <div class="sidebar-item">
+                <i class="fas fa-paper-plane"></i>
+                <span>Wysłane</span>
+            </div>
+
+            <div class="sidebar-item">
+                <i class="fas fa-file-alt"></i>
+                <span>Wersje robocze</span>
+            </div>
+
+            <div class="sidebar-item">
+                <i class="fas fa-trash"></i>
+                <span>Kosz</span>
+            </div>
+
+            <div class="sidebar-label">Etykiety</div>
+
+            <div class="sidebar-item">
+                <i class="fas fa-tag" style="color: #57b376;"></i>
+                <span>Zaakceptowane</span>
+                <span class="sidebar-count">3</span>
+            </div>
+
+            <div class="sidebar-item">
+                <i class="fas fa-tag" style="color: #e07a71;"></i>
+                <span>Odrzucone</span>
+                <span class="sidebar-count">1</span>
+            </div>
+
+            <div class="sidebar-item">
+                <i class="fas fa-tag" style="color: #e0b95f;"></i>
+                <span>Wymaga odpowiedzi</span>
+                <span class="sidebar-count">2</span>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="mail-content">
+            <!-- Search -->
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" class="search-input" placeholder="Szukaj w poczcie">
+            </div>
+
+            <!-- Tabs -->
+            <div class="mail-tabs">
+                <div class="mail-tab firmy active">
+                    <i class="fas fa-building"></i> Firmy
+                </div>
+                <div class="mail-tab zaakceptowano">
+                    <i class="fas fa-check-circle"></i> Zaakceptowano
+                </div>
+                <div class="mail-tab odrzucono">
+                    <i class="fas fa-times-circle"></i> Odrzucono
+                </div>
+                <div class="mail-tab wymaga">
+                    <i class="fas fa-reply"></i> Wymaga odpowiedzi
+                </div>
+                <div class="mail-tab spotkanie">
+                    <i class="fas fa-calendar-alt"></i> Utworzono spotkanie
+                </div>
+                <div class="mail-tab termin">
+                    <i class="fas fa-calendar-check"></i> Utworzono termin
+                </div>
+            </div>
+
+            <!-- Toolbar -->
+            <div class="mail-toolbar">
+                <div class="toolbar-left">
+                    <button class="toolbar-btn">
+                        <i class="far fa-square"></i>
+                    </button>
+                    <button class="toolbar-btn">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                    <button class="toolbar-btn">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                </div>
+                <div class="toolbar-right">
+                    <button class="toolbar-btn">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="toolbar-btn">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Emails List -->
+            <div class="emails-container">
+                <!-- Email Row - Accepted with meeting -->
+                <div class="email-row unread accepted">
+                    <div class="email-check">
+                        <i class="far fa-square"></i>
+                    </div>
+                    <div class="email-star">
+                        <i class="fas fa-star starred"></i>
+                    </div>
+                    <div class="email-important">
+                        <i class="far fa-bookmark"></i>
+                    </div>
+                    <div class="email-sender">TechCompany S.A.</div>
+                    <div class="email-content">
+                        <div class="email-subject-line">
+                            <div class="email-subject">Drugi etap rozmowy - Frontend Developer</div>
+                        </div>
+                        <div class="email-body-line">
+                            <div class="email-body">Zapraszamy na drugi etap rozmowy kwalifikacyjnej w dniu 20.05.2025 o godz. 14:00...</div>
+                            <div class="email-tags">
+                                <div class="email-tag calendar">
+                                    <i class="fas fa-calendar"></i> Zobacz w kalendarzu
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="email-actions">
+                        <button class="email-action-btn">
+                            <i class="fas fa-archive"></i>
+                        </button>
+                        <button class="email-action-btn">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                        <button class="email-action-btn">
+                            <i class="fas fa-envelope"></i>
+                        </button>
+                    </div>
+                    <div class="email-date">dziś</div>
+                </div>
+
+                <!-- Email Row - Accepted -->
+                <div class="email-row unread accepted">
+                    <div class="email-check">
+                        <i class="far fa-square"></i>
+                    </div>
+                    <div class="email-star">
+                        <i class="far fa-star"></i>
+                    </div>
+                    <div class="email-important">
+                        <i class="far fa-bookmark"></i>
+                    </div>
+                    <div class="email-sender">Innovative Solutions</div>
+                    <div class="email-content">
+                        <div class="email-subject-line">
+                            <div class="email-subject">Zaakceptowano aplikację - Projekt XYZ</div>
+                        </div>
+                        <div class="email-body-line">
+                            <div class="email-body">Twoja aplikacja została zaakceptowana. Prosimy o potwierdzenie terminu spotkania...</div>
+                            <div class="email-tags">
+                                <div class="email-tag response-required">Wymaga odpowiedzi</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="email-actions">
+                        <button class="email-action-btn">
+                            <i class="fas fa-archive"></i>
+                        </button>
+                        <button class="email-action-btn">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                        <button class="email-action-btn">
+                            <i class="fas fa-envelope"></i>
+                        </button>
+                    </div>
+                    <div class="email-date">wczoraj</div>
+                </div>
+
+                <!-- Email Row - Rejected -->
+                <div class="email-row rejected">
+                    <div class="email-check">
+                        <i class="far fa-square"></i>
+                    </div>
+                    <div class="email-star">
+                        <i class="far fa-star"></i>
+                    </div>
+                    <div class="email-important">
+                        <i class="far fa-bookmark"></i>
+                    </div>
+                    <div class="email-sender">Global Tech Ltd.</div>
+                    <div class="email-content">
+                        <div class="email-subject-line">
+                            <div class="email-subject">Odpowiedź na aplikację - UX Designer</div>
+                        </div>
+                        <div class="email-body-line">
+                            <div class="email-body">Dziękujemy za zainteresowanie. Niestety Twoja aplikacja nie spełnia obecnych wymagań...</div>
+                        </div>
+                    </div>
+                    <div class="email-actions">
+                        <button class="email-action-btn">
+                            <i class="fas fa-archive"></i>
+                        </button>
+                        <button class="email-action-btn">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                        <button class="email-action-btn">
+                            <i class="fas fa-envelope"></i>
+                        </button>
+                    </div>
+                    <div class="email-date">10 maja</div>
+                </div>
+
+                <!-- Email Row - Needs Response -->
+                <div class="email-row unread">
+                    <div class="email-check">
+                        <i class="far fa-square"></i>
+                    </div>
+                    <div class="email-star">
+                        <i class="fas fa-star starred"></i>
+                    </div>
+                    <div class="email-important">
+                        <i class="fas fa-bookmark"></i>
+                    </div>
+                    <div class="email-sender">Software House Inc.</div>
+                    <div class="email-content">
+                        <div class="email-subject-line">
+                            <div class="email-subject">Propozycja terminu rozmowy - Senior Developer</div>
+                        </div>
+                        <div class="email-body-line">
+                            <div class="email-body">Proponujemy termin rozmowy na dzień 25.05.2025. Prosimy o potwierdzenie...</div>
+                            <div class="email-tags">
+                                <div class="email-tag response-required">Wymaga odpowiedzi</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="email-actions">
+                        <button class="email-action-btn">
+                            <i class="fas fa-archive"></i>
+                        </button>
+                        <button class="email-action-btn">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                        <button class="email-action-btn">
+                            <i class="fas fa-envelope"></i>
+                        </button>
+                    </div>
+                    <div class="email-date">9 maja</div>
+                </div>
+
+                <!-- Email Row - Accepted + Meeting -->
+                <div class="email-row accepted">
+                    <div class="email-check">
+                        <i class="far fa-square"></i>
+                    </div>
+                    <div class="email-star">
+                        <i class="far fa-star"></i>
+                    </div>
+                    <div class="email-important">
+                        <i class="far fa-bookmark"></i>
+                    </div>
+                    <div class="email-sender">DataTech Solutions</div>
+                    <div class="email-content">
+                        <div class="email-subject-line">
+                            <div class="email-subject">Zaproszenie na rozmowę techniczną - Backend Developer</div>
+                        </div>
+                        <div class="email-body-line">
+                            <div class="email-body">Twoja aplikacja przeszła pierwszy etap weryfikacji. Zapraszamy na rozmowę techniczną...</div>
+                            <div class="email-tags">
+                                <div class="email-tag calendar">
+                                    <i class="fas fa-calendar"></i> Zobacz w kalendarzu
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="email-actions">
+                        <button class="email-action-btn">
+                            <i class="fas fa-archive"></i>
+                        </button>
+                        <button class="email-action-btn">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                        <button class="email-action-btn">
+                            <i class="fas fa-envelope"></i>
+                        </button>
+                    </div>
+                    <div class="email-date">7 maja</div>
+                </div>
+
+                <!-- Email Row - Normal -->
+                <div class="email-row">
+                    <div class="email-check">
+                        <i class="far fa-square"></i>
+                    </div>
+                    <div class="email-star">
+                        <i class="far fa-star"></i>
+                    </div>
+                    <div class="email-important">
+                        <i class="far fa-bookmark"></i>
+                    </div>
+                    <div class="email-sender">HR Department</div>
+                    <div class="email-content">
+                        <div class="email-subject-line">
+                            <div class="email-subject">RE: Aplikacja na stanowisko Junior Developer</div>
+                        </div>
+                        <div class="email-body-line">
+                            <div class="email-body">Dziękujemy za przesłanie CV. Pana aplikacja została przekazana do działu rekrutacji...</div>
+                        </div>
+                    </div>
+                    <div class="email-actions">
+                        <button class="email-action-btn">
+                            <i class="fas fa-archive"></i>
+                        </button>
+                        <button class="email-action-btn">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                        <button class="email-action-btn">
+                            <i class="fas fa-envelope"></i>
+                        </button>
+                    </div>
+                    <div class="email-date">5 maja</div>
+                </div>
+
+                <!-- Email Row - Normal -->
+                <div class="email-row">
+                    <div class="email-check">
+                        <i class="far fa-square"></i>
+                    </div>
+                    <div class="email-star">
+                        <i class="far fa-star"></i>
+                    </div>
+                    <div class="email-important">
+                        <i class="far fa-bookmark"></i>
+                    </div>
+                    <div class="email-sender">recruitment@company.com</div>
+                    <div class="email-content">
+                        <div class="email-subject-line">
+                            <div class="email-subject">Potwierdzenie otrzymania aplikacji</div>
+                        </div>
+                        <div class="email-body-line">
+                            <div class="email-body">Potwierdzamy otrzymanie Pana/Pani aplikacji. Odpowiemy najszybciej, jak to będzie możliwe...</div>
+                        </div>
+                    </div>
+                    <div class="email-actions">
+                        <button class="email-action-btn">
+                            <i class="fas fa-archive"></i>
+                        </button>
+                        <button class="email-action-btn">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                        <button class="email-action-btn">
+                            <i class="fas fa-envelope"></i>
+                        </button>
+                    </div>
+                    <div class="email-date">1 maja</div>
+                </div>
+
+                <!-- Email Row - Normal -->
+                <div class="email-row">
+                    <div class="email-check">
+                        <i class="far fa-square"></i>
+                    </div>
+                    <div class="email-star">
+                        <i class="far fa-star"></i>
+                    </div>
+                    <div class="email-important">
+                        <i class="far fa-bookmark"></i>
+                    </div>
+                    <div class="email-sender">WorkIn Team</div>
+                    <div class="email-content">
+                        <div class="email-subject-line">
+                            <div class="email-subject">Witamy w WorkIn!</div>
+                        </div>
+                        <div class="email-body-line">
+                            <div class="email-body">Dziękujemy za utworzenie konta. Oto kilka wskazówek, jak efektywnie korzystać z naszej platformy...</div>
+                        </div>
+                    </div>
+                    <div class="email-actions">
+                        <button class="email-action-btn">
+                            <i class="fas fa-archive"></i>
+                        </button>
+                        <button class="email-action-btn">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                        <button class="email-action-btn">
+                            <i class="fas fa-envelope"></i>
+                        </button>
+                    </div>
+                    <div class="email-date">28 kwi</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>&copy; 2025 WorkIn. Na podstawie tej skrzynki mailowej generowane są statusy aplikacji i wydarzenia w kalendarzu.</p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>workin - Panel użytkownika</title>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">
+            <h1>workin</h1>
+        </div>
+        <div class="nav-links">
+            <a href="../panel uzytkownika/strona.html" class="active">Panel użytkownika</a>
+            <a href="../skrzynka mailowa/skrzynka.html">Skrzynka</a>
+            <a href="../kalendarz/kalendarz.html">Kalendarz</a>
+            <a href="../aplikuj/aplikuj.html">Aplikuj</a>
+        </div>
+    </nav>
+
+    <!-- User Profile and CV Assessment Panels -->
+    <div class="dashboard-container">
+        <!-- Left Panel - User Profile Mini Panel -->
+        <section class="user-panel">
+            <div class="user-info">
+                <div class="user-avatar">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSF_XM5n8Tg588Al_5X_0m5NjXaxi3kYRgEww&s" alt="Zdjęcie profilowe">
+                </div>
+                <div class="user-details">
+                    <h2>Jan Kowalski</h2>
+                    <p class="user-title">Senior Frontend Developer</p>
+                    <p class="user-location"><i class="fas fa-map-marker-alt"></i> Kraków, Polska</p>
+                    <div class="user-stats">
+                        <div class="stat">
+                            <span class="stat-number">12</span>
+                            <span class="stat-label">Aplikacji</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">4</span>
+                            <span class="stat-label">Rozmów</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">2</span>
+                            <span class="stat-label">Ofert</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="user-actions">
+                    <button class="btn primary"><i class="fas fa-edit"></i> Edytuj profil</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Right Panels - CV Assessment and Documents -->
+        <div class="right-panels">
+            <!-- CV Assessment Panel -->
+            <section class="cv-assessment-panel">
+                <h2 class="section-title">Ocena CV</h2>
+                <div class="cv-score">
+                    <div class="chart-container">
+                        <div class="donut-chart">
+                            <div class="percentage">79%</div>
+                        </div>
+                    </div>
+                    <div class="cv-feedback">
+                        <h3>Uwagi do CV:</h3>
+                        <ul>
+                            <li><i class="fas fa-check-circle positive"></i> Dobre przedstawienie doświadczenia zawodowego</li>
+                            <li><i class="fas fa-check-circle positive"></i> Przejrzysta struktura dokumentu</li>
+                            <li><i class="fas fa-exclamation-circle negative"></i> Brak wymienienia konkretnych projektów</li>
+                            <li><i class="fas fa-exclamation-circle negative"></i> Zbyt ogólny opis umiejętności technicznych</li>
+                            <li><i class="fas fa-exclamation-circle warning"></i> Rozważ dodanie sekcji z osiągnięciami</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Documents Panel -->
+            <section class="documents-panel">
+                <h2 class="section-title">Dokumenty i linki</h2>
+                <div class="documents-container">
+                    <div class="uploaded-docs">
+                        <h3>Twoje dokumenty</h3>
+                        <ul class="docs-list">
+                            <li>
+                                <i class="fas fa-file-pdf"></i>
+                                <span>CV_JanKowalski_2025.pdf</span>
+                                <div class="doc-actions">
+                                    <button class="btn-icon small"><i class="fas fa-eye"></i></button>
+                                    <button class="btn-icon small"><i class="fas fa-trash"></i></button>
+                                </div>
+                            </li>
+                            <li>
+                                <i class="fas fa-file-word"></i>
+                                <span>List_motywacyjny.docx</span>
+                                <div class="doc-actions">
+                                    <button class="btn-icon small"><i class="fas fa-eye"></i></button>
+                                    <button class="btn-icon small"><i class="fas fa-trash"></i></button>
+                                </div>
+                            </li>
+                            <li>
+                                <i class="fas fa-file-alt"></i>
+                                <span>Certyfikaty.zip</span>
+                                <div class="doc-actions">
+                                    <button class="btn-icon small"><i class="fas fa-eye"></i></button>
+                                    <button class="btn-icon small"><i class="fas fa-trash"></i></button>
+                                </div>
+                            </li>
+                        </ul>
+                        <button class="btn primary upload-btn"><i class="fas fa-upload"></i> Dodaj dokument</button>
+                    </div>
+                    <div class="profile-links">
+                        <h3>Linki profilowe</h3>
+                        <ul class="links-list">
+                            <li>
+                                <i class="fab fa-github"></i>
+                                <span>github.com/jankowalski</span>
+                                <button class="btn-icon small"><i class="fas fa-external-link-alt"></i></button>
+                            </li>
+                            <li>
+                                <i class="fab fa-linkedin"></i>
+                                <span>linkedin.com/in/jankowalski</span>
+                                <button class="btn-icon small"><i class="fas fa-external-link-alt"></i></button>
+                            </li>
+                            <li>
+                                <i class="fas fa-globe"></i>
+                                <span>jankowalski.pl</span>
+                                <button class="btn-icon small"><i class="fas fa-external-link-alt"></i></button>
+                            </li>
+                        </ul>
+                        <button class="btn primary add-link-btn"><i class="fas fa-plus"></i> Dodaj link</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Job Applications Table -->
+    <section class="applications">
+        <h2 class="section-title">Twoje aplikacje</h2>
+        <div class="table-container">
+            <table class="job-table">
+                <thead>
+                    <tr>
+                        <th>Firma</th>
+                        <th>Stanowisko</th>
+                        <th>Data aplikacji</th>
+                        <th>Status</th>
+                        <th>Akcje</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="company-info">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/1200px-Google_%22G%22_logo.svg.png" alt="Google Logo">
+                                <span>Google</span>
+                            </div>
+                        </td>
+                        <td>Senior Frontend Developer</td>
+                        <td>15.05.2025</td>
+                        <td><span class="status in-review">W trakcie weryfikacji</span></td>
+                        <td>
+                            <button class="btn-icon"><i class="fas fa-eye"></i></button>
+                            <button class="btn-icon"><i class="fas fa-comment"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="company-info">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Microsoft_logo.svg/2048px-Microsoft_logo.svg.png" alt="Microsoft Logo">
+                                <span>Microsoft</span>
+                            </div>
+                        </td>
+                        <td>UX/UI Designer</td>
+                        <td>10.05.2025</td>
+                        <td><span class="status interview">Zaproszenie na rozmowę</span></td>
+                        <td>
+                            <button class="btn-icon"><i class="fas fa-eye"></i></button>
+                            <button class="btn-icon"><i class="fas fa-comment"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="company-info">
+                                <img src="https://logotypy.net/wp-content/uploads/2023/09/logo-amazon.jpg" alt="Amazon Logo">
+                                <span>Amazon</span>
+                            </div>
+                        </td>
+                        <td>Full Stack Developer</td>
+                        <td>05.05.2025</td>
+                        <td><span class="status rejected">Odrzucono</span></td>
+                        <td>
+                            <button class="btn-icon"><i class="fas fa-eye"></i></button>
+                            <button class="btn-icon"><i class="fas fa-comment"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="company-info">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/2023_Facebook_icon.svg/2048px-2023_Facebook_icon.svg.png" alt="Facebook Logo">
+                                <span>Facebook</span>
+                            </div>
+                        </td>
+                        <td>React Developer</td>
+                        <td>01.05.2025</td>
+                        <td><span class="status accepted">Oferta przyjęta</span></td>
+                        <td>
+                            <button class="btn-icon"><i class="fas fa-eye"></i></button>
+                            <button class="btn-icon"><i class="fas fa-comment"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="company-info">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Apple_logo_black.svg/1667px-Apple_logo_black.svg.png" alt="Apple Logo">
+                                <span>Apple</span>
+                            </div>
+                        </td>
+                        <td>iOS Developer</td>
+                        <td>18.05.2025</td>
+                        <td><span class="status in-review">W trakcie weryfikacji</span></td>
+                        <td>
+                            <button class="btn-icon"><i class="fas fa-eye"></i></button>
+                            <button class="btn-icon"><i class="fas fa-comment"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="company-info">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/IBM_logo.svg/2560px-IBM_logo.svg.png" alt="IBM Logo">
+                                <span>IBM</span>
+                            </div>
+                        </td>
+                        <td>Cloud Architect</td>
+                        <td>20.05.2025</td>
+                        <td><span class="status interview">Zaproszenie na rozmowę</span></td>
+                        <td>
+                            <button class="btn-icon"><i class="fas fa-eye"></i></button>
+                            <button class="btn-icon"><i class="fas fa-comment"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="company-info">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/2560px-Amazon_logo.svg.png" alt="Netflix Logo">
+                                <span>Netflix</span>
+                            </div>
+                        </td>
+                        <td>Backend Developer</td>
+                        <td>19.05.2025</td>
+                        <td><span class="status in-review">W trakcie weryfikacji</span></td>
+                        <td>
+                            <button class="btn-icon"><i class="fas fa-eye"></i></button>
+                            <button class="btn-icon"><i class="fas fa-comment"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="company-info">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Volkswagen_logo_2019.svg/2048px-Volkswagen_logo_2019.svg.png" alt="Volkswagen Logo">
+                                <span>Volkswagen</span>
+                            </div>
+                        </td>
+                        <td>DevOps Engineer</td>
+                        <td>15.05.2025</td>
+                        <td><span class="status rejected">Odrzucono</span></td>
+                        <td>
+                            <button class="btn-icon"><i class="fas fa-eye"></i></button>
+                            <button class="btn-icon"><i class="fas fa-comment"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="company-info">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/1280px-Google_2015_logo.svg.png" alt="Adidas Logo">
+                                <span>Adidas</span>
+                            </div>
+                        </td>
+                        <td>UX/UI Designer</td>
+                        <td>12.05.2025</td>
+                        <td><span class="status interview">Zaproszenie na rozmowę</span></td>
+                        <td>
+                            <button class="btn-icon"><i class="fas fa-eye"></i></button>
+                            <button class="btn-icon"><i class="fas fa-comment"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="company-info">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Tesla_logo.png/1200px-Tesla_logo.png" alt="Tesla Logo">
+                                <span>Tesla</span>
+                            </div>
+                        </td>
+                        <td>Data Scientist</td>
+                        <td>09.05.2025</td>
+                        <td><span class="status accepted">Oferta przyjęta</span></td>
+                        <td>
+                            <button class="btn-icon"><i class="fas fa-eye"></i></button>
+                            <button class="btn-icon"><i class="fas fa-comment"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="company-info">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Logonetflix.png/1200px-Logonetflix.png" alt="Spotify Logo">
+                                <span>Spotify</span>
+                            </div>
+                        </td>
+                        <td>Audio Engineer</td>
+                        <td>05.05.2025</td>
+                        <td><span class="status in-review">W trakcie weryfikacji</span></td>
+                        <td>
+                            <button class="btn-icon"><i class="fas fa-eye"></i></button>
+                            <button class="btn-icon"><i class="fas fa-comment"></i></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-column">
+                <h3>WorkIn</h3>
+                <p>Twoja droga do kariery zaczyna się tutaj!</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3>Linki</h3>
+                <ul>
+                    <li><a href="#">Strona główna</a></li>
+                    <li><a href="#">O nas</a></li>
+                    <li><a href="#">Oferty pracy</a></li>
+                    <li><a href="#">Dla pracodawców</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Kontakt</h3>
+                <p><i class="fas fa-map-marker-alt"></i> ul. Przykładowa 123, Warszawa</p>
+                <p><i class="fas fa-phone"></i> +48 123 456 789</p>
+                <p><i class="fas fa-envelope"></i> kontakt@workin.pl</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 WorkIn. Wszystkie prawa zastrzeżone.</p>
+        </div>
+    </footer>
+</body>
+</html>
